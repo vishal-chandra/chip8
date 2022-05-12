@@ -1,0 +1,13 @@
+# General Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Workspace
+.vscode/*
+
+# output files
+*.o
+*.dll
+*.dylib
+*.exe
