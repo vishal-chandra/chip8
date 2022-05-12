@@ -21,7 +21,7 @@ void Chip8::loadROM(string filename) {
         is.read(buffer, length);
 
         //copy buffer to chip8 memory
-        for(long i = 0; i < length; i++) {
+        for(long i = 0; i < length; ++i) {
             memory[MEM_START + i] = buffer[i];
         }
 
