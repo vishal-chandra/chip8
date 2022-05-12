@@ -1,17 +1,25 @@
 #include <cstdint>
 #include <string>
+#include <random>
+#include <chrono>
 
 class Chip8 {
 
     public:
 
-    Chip8();
+    Chip8() 
+        : rand(std::chrono::high_resolution_clock::now().time_since_epoch().count())
+    {
+        //random
+        byte_distr = std::uniform_int_distribution<uint8_t>(0, 255U);
+    }
 
     void loadROM(std::string filename);
 
     private:
 
     void loadFont();
+    uint8_t randByte();
 
     //storage
     uint8_t registers[16];                  //operands
@@ -52,4 +60,8 @@ class Chip8 {
 
     //instruction
     uint16_t opcode;                        //current instruction
+
+    //random
+    std::mt19937 rand;
+    std::uniform_int_distribution<uint8_t> byte_distr;
 };

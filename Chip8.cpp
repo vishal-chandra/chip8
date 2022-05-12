@@ -36,3 +36,7 @@ void Chip8::loadFont() {
         memory[FONT_START + i] = font[i];
     }
 }
+
+uint8_t Chip8::randByte() {
+    return byte_distr(rand);
+}
