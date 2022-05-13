@@ -21,6 +21,7 @@ class Chip8 {
     //util
     void loadFont();
     uint8_t randByte();
+    void setpx(int row, int col, bool val);
 
     //OPERATIONS
     void OP_00E0();
