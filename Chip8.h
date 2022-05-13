@@ -18,8 +18,24 @@ class Chip8 {
 
     private:
 
+    //util
     void loadFont();
     uint8_t randByte();
+
+    //OPERATIONS
+    void OP_00E0();
+
+    void OP_1NNN();
+
+    void OP_6XNN();
+
+    void OP_7XNN();
+
+    void OP_ANNN();
+
+    void OP_DXYN();
+
+    // EMULATED COMPONENTS
 
     //storage
     uint8_t registers[16];                  //operands
