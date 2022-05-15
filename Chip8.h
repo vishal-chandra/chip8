@@ -11,6 +11,10 @@ class Chip8 {
 
     void loadROM(std::string filename);
 
+    // I/O
+    bool keys[16];                          //current user input
+    uint32_t display[64][32];               //pixel data (using 32-bit for SDL)
+
     private:
 
     //util
@@ -66,10 +70,6 @@ class Chip8 {
     uint8_t sp;                             //stack pointer
     uint8_t delay_timer;                    //60Hz decrementing delay timer
     uint8_t sound_timer;                    //60Hz decrementing sound timer
-
-    // I/O
-    bool keys[16];                          //current user input
-    uint32_t display[64][32];               //pixel data (using 32-bit for SDL)
 
     //instruction
     uint16_t opcode;                        //current instruction
