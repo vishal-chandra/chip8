@@ -7,12 +7,7 @@ class Chip8 {
 
     public:
 
-    Chip8() 
-        : rand(std::chrono::high_resolution_clock::now().time_since_epoch().count())
-    {
-        //random
-        byte_distr = std::uniform_int_distribution<uint8_t>(0, 255U);
-    }
+    Chip8();
 
     void loadROM(std::string filename);
 
@@ -43,8 +38,9 @@ class Chip8 {
     uint8_t memory[4096]; 
     const unsigned int MEM_START = 0x200;   //beginning of usable memory
     const unsigned int FONT_START = 0x050;  //arbitrary beginning of font memory
+    const unsigned int FONT_SIZE = 16 * 5;  //16 font sprites, 5 rows each
 
-    const unsigned int font[16 * 5] = {     //16 font sprites, 5 rows each
+    const unsigned int font[16 * 5] = {     
         0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
         0x20, 0x60, 0x20, 0x20, 0x70, // 1
         0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2

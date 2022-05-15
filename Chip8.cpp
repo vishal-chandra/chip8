@@ -3,6 +3,28 @@
 
 using namespace std;
 
+Chip8::Chip8() 
+    : rand(std::chrono::high_resolution_clock::now().time_since_epoch().count())
+{
+    //clear registers, keys, and display
+    for(auto reg : registers) {
+        reg = 0;
+    }
+    for(auto key : keys) {
+        key = 0;
+    }
+    OP_00E0();
+
+    //init execution vars
+    PC = MEM_START;
+    byte_distr = std::uniform_int_distribution<uint8_t>(0, 255U);
+
+    //load fonts
+    for(int i = 0; i < FONT_SIZE; ++i) {
+        memory[FONT_START + i] = font[i];
+    }
+}
+
 void Chip8::loadROM(string filename) {
 
     //open the file as binary
