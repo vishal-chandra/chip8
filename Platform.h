@@ -13,7 +13,6 @@ class Platform {
 
     void update(void const * pixels, int pitch);
     void processKeys(bool* keys);
-    bool quitPressed();
 
     private:
     SDL_Window * window;
