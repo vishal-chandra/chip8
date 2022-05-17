@@ -4,7 +4,11 @@
 class Platform {
 
     public:
-    Platform();
+    Platform(
+        char const * title, 
+        int windowWidth, int windowHeight, 
+        int imageWidth, int imageHeight
+    );
     ~Platform();
 
     void update();
