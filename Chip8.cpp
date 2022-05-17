@@ -20,7 +20,7 @@ Chip8::Chip8()
     byte_distr = std::uniform_int_distribution<uint8_t>(0, 255U);
 
     //load fonts
-    for(int i = 0; i < FONT_SIZE; ++i) {
+    for(unsigned int i = 0; i < FONT_SIZE; ++i) {
         memory[FONT_START + i] = font[i];
     }
 }

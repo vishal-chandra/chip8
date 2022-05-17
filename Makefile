@@ -4,7 +4,7 @@ OBJECTS = $(SOURCES:%.cpp=%.o)
 
 
 CXX = g++
-CXXFLAGS = -std=c++11 -F/Library/Frameworks -Wall -Wextra -Werror -pedantic
+CXXFLAGS = -std=c++11 -F/Library/Frameworks -framework SDL2 -Wall -Wextra -Werror -pedantic
 
 all: release debug
 

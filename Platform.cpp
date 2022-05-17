@@ -16,7 +16,7 @@ Platform::Platform(
         SDL_PIXELFORMAT_RGBA8888, 
         SDL_TEXTUREACCESS_STREAMING, 
         imageWidth,
-        imageWidth
+        imageHeight
     );
 }
 
@@ -96,8 +96,12 @@ bool Platform::processKeys(bool * keys) {
                     case SDL_SCANCODE_V:
                         keys[0xF] = !keys[0xF];
                         break;
+                    default:
+                        break;
                 }
+            default:
+                break;
         }
-        return false;
     }
+    return false;
 }

@@ -7,7 +7,14 @@
 .vscode/*
 
 # output files
+*.dSYM
 *.o
 *.dll
 *.dylib
 *.exe
+chip8
+chip8_debug
+
+# ROMS
+*.ch8
+*.txt

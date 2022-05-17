@@ -67,10 +67,10 @@ class Chip8 {
     //execution
     uint16_t I;                             //line number oprand register
     uint16_t PC;                            //current line number
-    uint16_t stack[16];                     //execution stack
-    uint8_t sp;                             //stack pointer
-    uint8_t delay_timer;                    //60Hz decrementing delay timer
-    uint8_t sound_timer;                    //60Hz decrementing sound timer
+    //uint16_t stack[16];                     //execution stack
+    //uint8_t sp;                             //stack pointer
+    //uint8_t delay_timer;                    //60Hz decrementing delay timer
+    //uint8_t sound_timer;                    //60Hz decrementing sound timer
 
     //instruction
     uint16_t opcode;                        //current instruction
