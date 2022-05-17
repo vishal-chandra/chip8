@@ -18,4 +18,5 @@ debug:
 
 clean:
 	rm -f $(EXECUTABLE) $(EXECUTABLE)_debug $(OBJECTS)
+	rm -Rf *.dSYM
 
