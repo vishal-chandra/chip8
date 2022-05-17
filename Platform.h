@@ -11,7 +11,7 @@ class Platform {
     );
     ~Platform();
 
-    void update();
+    void update(void const * pixels, int pitch);
     void processKeys(bool* keys);
     bool quitPressed();
 

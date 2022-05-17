@@ -13,7 +13,7 @@ class Chip8 {
 
     // I/O
     bool keys[16];                          //current user input
-    uint32_t display[64][32];               //pixel data (using 32-bit for SDL)
+    uint32_t display[64 * 32];              //pixel data (using 32-bit for SDL)
 
     private:
 

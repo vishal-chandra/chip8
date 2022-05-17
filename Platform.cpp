@@ -27,6 +27,9 @@ Platform::~Platform() {
     SDL_Quit();
 }
 
-void Platform::update() {
-    
+void Platform::update(void const * pixels, int pitch) {
+    SDL_UpdateTexture(texture, nullptr, pixels, pitch);
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, texture, nullptr, nullptr);
+    SDL_RenderPresent(renderer);
 }
