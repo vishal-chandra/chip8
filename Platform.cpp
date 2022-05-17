@@ -34,7 +34,7 @@ void Platform::update(void const * pixels, int pitch) {
     SDL_RenderPresent(renderer);
 }
 
-void Platform::processKeys(bool * keys) {
+bool Platform::processKeys(bool * keys) {
     SDL_Event e;
 
     while(SDL_PollEvent(&e)) { //loop over all queued keypresses
@@ -46,6 +46,8 @@ void Platform::processKeys(bool * keys) {
             case SDL_KEYDOWN:
             case SDL_KEYUP:
                 switch(e.key.keysym.scancode) {
+                    case SDL_SCANCODE_ESCAPE:
+                        return true;
                     case SDL_SCANCODE_X:
                         keys[0] = !keys[0];
                         break;
@@ -96,5 +98,6 @@ void Platform::processKeys(bool * keys) {
                         break;
                 }
         }
+        return false;
     }
 }

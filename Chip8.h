@@ -8,12 +8,13 @@ class Chip8 {
     public:
 
     Chip8();
-
     void loadROM(std::string filename);
 
     // I/O
-    bool keys[16];                          //current user input
-    uint32_t display[64 * 32];              //pixel data (using 32-bit for SDL)
+    bool keys[16];                                      //current user input
+    static const int DISPLAY_WIDTH = 64;
+    static const int DISPLAY_HEIGHT = 32;
+    uint32_t display[DISPLAY_HEIGHT * DISPLAY_WIDTH];   //pixel data (using 32-bit for SDL)
 
     private:
 

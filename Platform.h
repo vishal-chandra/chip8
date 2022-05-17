@@ -12,7 +12,7 @@ class Platform {
     ~Platform();
 
     void update(void const * pixels, int pitch);
-    void processKeys(bool* keys);
+    bool processKeys(bool* keys);
 
     private:
     SDL_Window * window;

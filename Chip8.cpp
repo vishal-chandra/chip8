@@ -64,7 +64,7 @@ uint8_t Chip8::randByte() {
 }
 
 void Chip8::setpx(int row, int col, bool val) {
-    display[row * 64 + col] = val ? 0xFFFFFFFF : 0x00000000;
+    display[row * DISPLAY_WIDTH + col] = val ? 0xFFFFFFFF : 0x00000000;
 }
 
 //OPERATIONS
@@ -72,7 +72,7 @@ void Chip8::setpx(int row, int col, bool val) {
 
 //clear display
 void Chip8::OP_00E0() {
-    fill(display, display + 32 * 64, 0);
+    fill(display, display + DISPLAY_HEIGHT * DISPLAY_WIDTH, 0);
 }
 
 //load program counter
@@ -127,8 +127,8 @@ void Chip8::OP_DXYN() {
             uint8_t bit = (bool)(byte & (mask >> pos));
 
             //check bit against current display
-            bool curr_disp = (bool) (display[(xLoc + pos) + yLoc * 64]);
-            bool disp_val = curr_disp != bit; //XOR
+            bool curr_disp = (bool) (display[(xLoc + pos) + (yLoc * DISPLAY_WIDTH)]);
+            bool disp_val = curr_disp != bit;   //XOR
             registers[0xF] = curr_disp && bit; //VF shows sprite collision
 
             setpx(xLoc, yLoc, disp_val);
