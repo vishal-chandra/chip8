@@ -17,5 +17,5 @@ debug:
 	$(CXX) $(CXXFLAGS) $(SOURCES) -o $(EXECUTABLE)_debug
 
 clean:
-	rm -f $(EXECUTABLE) $(OBJECTS)
+	rm -f $(EXECUTABLE) $(EXECUTABLE)_debug $(OBJECTS)
 

@@ -7,7 +7,7 @@ using namespace std;
 
 int main(int argc, char ** argv) {
     if(argc != 4) {
-        cerr << "Usage: " << argv[0] << "<scale> <delay> <ROM PATH>\n";
+        cerr << "Usage: " << argv[0] << " <scale> <delay> <ROM PATH>\n";
         exit(1);
     }
 
