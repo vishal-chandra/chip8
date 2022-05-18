@@ -223,7 +223,7 @@ void Chip8::OP_1NNN() {
 void Chip8::OP_2NNN() {
     uint16_t SR_loc = opcode & 0x0FFFu;
 
-    callstack.push(SR_loc);
+    callstack.push(PC);
     PC = SR_loc;
 }
 
@@ -301,9 +301,9 @@ void Chip8::OP_8XY3() {
 void Chip8::OP_8XY4() {
     uint8_t X = (opcode & 0x0F00u) >> 8;
     uint8_t Y = (opcode & 0x00F0u) >> 4;
-    uint16_t S = X + Y;
+    uint16_t S = registers[X] + registers[Y];
 
-    registers[0xF] = S > 255u ? 1 : 0;  //check for ovf
+    registers[0xF] = S > 255 ? 1 : 0;   //check for ovf
     registers[X] = S & 0x00FFu;         //truncate sum
 }
 
