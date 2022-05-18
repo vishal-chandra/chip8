@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <string>
+#include <stack>
 #include <random>
 #include <chrono>
 
@@ -28,11 +29,41 @@ class Chip8 {
     //OPERATIONS
     void OP_00E0();
 
+    void OP_00EE();
+
     void OP_1NNN();
+
+    void OP_2NNN();
+
+    void OP_3XNN();
+
+    void OP_4XNN();
+
+    void OP_5XY0();
 
     void OP_6XNN();
 
     void OP_7XNN();
+
+    void OP_8XY0();
+
+    void OP_8XY1();
+
+    void OP_8XY2();
+
+    void OP_8XY3();
+
+    void OP_8XY4();
+
+    void OP_8XY5();
+
+    void OP_8XY6();
+
+    void OP_8XY7();
+
+    void OP_8XYE();
+
+    void OP_9XY0();
 
     void OP_ANNN();
 
@@ -69,8 +100,8 @@ class Chip8 {
     //execution
     uint16_t I;                             //line number oprand register
     uint16_t PC;                            //current line number
-    //uint16_t stack[16];                     //execution stack
-    //uint8_t sp;                             //stack pointer
+    std::stack<uint16_t> callstack;         //call stack containing PC values
+
     uint8_t delay_timer;                    //60Hz decrementing delay timer
     uint8_t sound_timer;                    //60Hz decrementing sound timer
     uint16_t opcode;                        //current instruction

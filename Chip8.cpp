@@ -120,38 +120,160 @@ void Chip8::cycle() {
 
 //OPERATIONS
 //note: all bitshifts are in binary, so 4x num places in hex
+//oparations used in the IBM test ROM are denoted by (IBM)
 
-//clear display
+//clear display (IBM)
 void Chip8::OP_00E0() {
     fill(display, display + DISPLAY_HEIGHT * DISPLAY_WIDTH, 0);
 }
 
-//load program counter
+//return from subroutine
+void Chip8::OP_00EE() {
+    if(!callstack.size() > 0) return; //no subroutine to return from
+
+    PC = callstack.top();
+    callstack.pop();
+}
+
+//load program counter (IBM)
 void Chip8::OP_1NNN() {
     PC = opcode & 0x0FFFu;
 }
 
-//load VX with NN
+//enter subroutine
+void Chip8::OP_2NNN() {
+    uint16_t SR_loc = opcode & 0x0FFFu;
+
+    callstack.push(SR_loc);
+    PC = SR_loc;
+}
+
+//skip if register == X
+void Chip8::OP_3XNN() {
+    uint8_t X =  (opcode & 0x0F00u) >> 8;
+    uint8_t NN = (opcode & 0x00FFu);
+
+    if(registers[X] == NN) PC += 2;
+}
+
+//skip if register != X
+void Chip8::OP_4XNN() {
+    uint8_t X =  (opcode & 0x0F00u) >> 8;
+    uint8_t NN = (opcode & 0x00FFu);
+
+    if(registers[X] != NN) PC += 2;
+}
+
+//skip if registers are equal
+void Chip8::OP_5XY0() {
+    uint8_t X = (opcode & 0x0F00u) >> 8;
+    uint8_t Y = (opcode & 0x00F0u) >> 4;
+
+    if(registers[X] == registers[Y]) PC += 2;
+}
+
+//load VX with NN (IBM)
 void Chip8::OP_6XNN() {
     uint8_t X = (opcode & 0x0F00u) >> 8;
     uint8_t NN = opcode & 0x00FFu;
     registers[X] = NN;
 }
 
-//add NN to VX
+//add NN to VX (IBM)
 void Chip8::OP_7XNN() {
     uint8_t X = (opcode & 0x0F00u) >> 8;
     uint8_t NN = opcode & 0x00FFu;
     registers[X] += NN;
 }
 
-//load index register with NNN
+//set VX = VY
+void Chip8::OP_8XY0() {
+    uint8_t X = (opcode & 0x0F00u) >> 8;
+    uint8_t Y = (opcode & 0x00F0u) >> 4;
+
+    registers[X] = registers[Y];
+}
+
+//set VX |= VY
+void Chip8::OP_8XY1() {
+    uint8_t X = (opcode & 0x0F00u) >> 8;
+    uint8_t Y = (opcode & 0x00F0u) >> 4;
+
+    registers[X] |= registers[Y];
+}
+
+//set VX &= VY
+void Chip8::OP_8XY2() {
+    uint8_t X = (opcode & 0x0F00u) >> 8;
+    uint8_t Y = (opcode & 0x00F0u) >> 4;
+
+    registers[X] &= registers[Y];
+}
+
+//set VX ^= VY
+void Chip8::OP_8XY3() {
+    uint8_t X = (opcode & 0x0F00u) >> 8;
+    uint8_t Y = (opcode & 0x00F0u) >> 4;
+
+    registers[X] ^= registers[Y];
+}
+
+//set VX += VY with overflow detection
+void Chip8::OP_8XY4() {
+    uint8_t X = (opcode & 0x0F00u) >> 8;
+    uint8_t Y = (opcode & 0x00F0u) >> 4;
+    uint16_t S = X + Y;
+
+    registers[0xF] = S > 255u ? 1 : 0;  //check for ovf
+    registers[X] = S & 0x00FFu;         //truncate sum
+}
+
+//set VX = VX - VY with underflow detection
+void Chip8::OP_8XY5() {
+    uint8_t X = (opcode & 0x0F00u) >> 8;
+    uint8_t Y = (opcode & 0x00F0u) >> 4;
+
+    registers[0xF] = (X > Y) ? 1 : 0;
+    registers[X] -= registers[Y];
+}
+
+void Chip8::OP_8XY6() {
+    uint8_t X = (opcode & 0x0F00u) >> 8;
+
+    registers[0xF] = registers[X] & 0x01u; //capture shifted bit in VF
+    registers[X] >>= 1;
+}
+
+//set VX = VY - VX with underflow detection
+void Chip8::OP_8XY7() {
+    uint8_t X = (opcode & 0x0F00u) >> 8;
+    uint8_t Y = (opcode & 0x00F0u) >> 4;
+
+    registers[0xF] = (Y > X) ? 1 : 0;
+    registers[X] = registers[Y] - registers[X];
+}
+
+void Chip8::OP_8XYE() { uint8_t X = (opcode & 0x0F00u) >> 8;
+
+    //capture shifted bit in VF
+    registers[0xF] = (registers[X] & 0x80u) >> 7; 
+    registers[X] <<= 1;
+}
+
+void Chip8::OP_9XY0() {
+    uint8_t X = (opcode & 0x0F00u) >> 8;
+    uint8_t Y = (opcode & 0x00F0u) >> 4;
+
+    if(registers[X] != registers[Y]) PC += 2;
+}
+
+//load index register with NNN (IBM)
 void Chip8::OP_ANNN() {
     I = (opcode & 0x0FFFu);
 }
 
 //draw N-height sprite from I
-//at (x, y) = (VX, VY)
+//at (VX, VY) (IBM)
 void Chip8::OP_DXYN() {
     uint8_t X = (opcode & 0x0F00u) >> 8;
     uint8_t Y = (opcode & 0x00F0u) >> 4;
