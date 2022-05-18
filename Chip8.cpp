@@ -342,3 +342,22 @@ void Chip8::OP_EXA1() {
 
     if(!keys[registers[X]]) PC += 2;
 }
+
+void Chip8::OP_FX07() {
+    uint8_t X = (opcode & 0x0F00) >> 8;
+
+    registers[X] = delay_timer;
+}
+
+void Chip8::OP_FX15() {
+    uint8_t X = (opcode & 0x0F00) >> 8;
+
+    delay_timer = registers[X];
+}
+
+void Chip8::OP_FX18() {
+    uint8_t X = (opcode & 0x0F00) >> 8;
+
+    sound_timer = registers[X];
+}
+

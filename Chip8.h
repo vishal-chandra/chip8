@@ -77,6 +77,12 @@ class Chip8 {
 
     void OP_EXA1();
 
+    void OP_FX07();
+
+    void OP_FX15();
+
+    void OP_FX18();
+
     // EMULATED COMPONENTS
 
     //storage
