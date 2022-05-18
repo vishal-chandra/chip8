@@ -37,7 +37,7 @@ int main(int argc, char ** argv) {
         float diff = chrono::duration<float, chrono::milliseconds::period>(currentTime - lastTime).count();
         if(diff > delay) {
             lastTime = currentTime;
-            //system.cycle();
+            system.cycle();
             platform.update(system.display, pitch);
         }
     }

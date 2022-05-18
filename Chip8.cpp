@@ -25,6 +25,7 @@ Chip8::Chip8()
     }
 }
 
+//UTIL Functions
 void Chip8::loadROM(string filename) {
 
     //open the file as binary
@@ -63,8 +64,58 @@ uint8_t Chip8::randByte() {
     return byte_distr(rand);
 }
 
-void Chip8::setpx(int row, int col, bool val) {
-    display[row * DISPLAY_WIDTH + col] = val ? 0xFFFFFFFF : 0x00000000;
+//MAIN SIMULATOR CALL
+void Chip8::cycle() {
+
+    //read next instruction and increment
+    opcode = (memory[PC] << 8u) | memory[PC + 1];
+    PC += 2;
+
+    //update counters
+    if(sound_timer > 0) sound_timer--;
+    if(delay_timer > 0) delay_timer--;
+
+    switch(opcode & 0xF000u) {
+        case 0x0000:
+            OP_00E0();
+            break;
+        case 0x1000:
+            OP_1NNN();
+            break;
+        case 0x2000:
+            break;
+        case 0x3000:
+            break;
+        case 0x4000:
+            break;
+        case 0x5000:
+            break;
+        case 0x6000:
+            OP_6XNN();
+            break;
+        case 0x7000:
+            OP_7XNN();
+            break;
+        case 0x8000:
+            break;
+        case 0x9000:
+            break;
+        case 0xA000:
+            OP_ANNN();
+            break;
+        case 0xB000:
+            break;
+        case 0xC000:
+            break;
+        case 0xD000:
+            OP_DXYN();
+            break;
+        case 0xE000:
+            break;
+        case 0xF000:
+            break;
+    }
+
 }
 
 //OPERATIONS
@@ -96,7 +147,7 @@ void Chip8::OP_7XNN() {
 
 //load index register with NNN
 void Chip8::OP_ANNN() {
-    I = opcode & 0x0FFFu;
+    I = (opcode & 0x0FFFu);
 }
 
 //draw N-height sprite from I
@@ -121,17 +172,19 @@ void Chip8::OP_DXYN() {
         for(int pos = 0; pos < 8; ++pos) {
 
             //don't draw over the edge
-            if(xLoc + pos > 31) break;
+            if(xLoc + pos > 63) break;
 
             //move the mask bit and AND for one bit
-            uint8_t bit = (bool)(byte & (mask >> pos));
+            bool bit = (bool)(byte & (mask >> pos));
 
             //check bit against current display
-            bool curr_disp = (bool) (display[(xLoc + pos) + (yLoc * DISPLAY_WIDTH)]);
+            unsigned int flattened_pos = (xLoc + pos) + (yLoc * DISPLAY_WIDTH);
+            bool curr_disp = (bool) display[flattened_pos];
             bool disp_val = curr_disp != bit;   //XOR
             registers[0xF] = curr_disp && bit; //VF shows sprite collision
 
-            setpx(xLoc, yLoc, disp_val);
+            //write changes
+            display[flattened_pos] = (disp_val ? 0xFFFFFFFF : 0x00000000);
         }
 
         ++yLoc;

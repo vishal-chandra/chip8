@@ -16,12 +16,14 @@ class Chip8 {
     static const int DISPLAY_HEIGHT = 32;
     uint32_t display[DISPLAY_HEIGHT * DISPLAY_WIDTH];   //pixel data (using 32-bit for SDL)
 
+    //called once per tick
+    void cycle();
+
     private:
 
     //util
     void loadFont();
     uint8_t randByte();
-    void setpx(int row, int col, bool val);
 
     //OPERATIONS
     void OP_00E0();
@@ -69,10 +71,8 @@ class Chip8 {
     uint16_t PC;                            //current line number
     //uint16_t stack[16];                     //execution stack
     //uint8_t sp;                             //stack pointer
-    //uint8_t delay_timer;                    //60Hz decrementing delay timer
-    //uint8_t sound_timer;                    //60Hz decrementing sound timer
-
-    //instruction
+    uint8_t delay_timer;                    //60Hz decrementing delay timer
+    uint8_t sound_timer;                    //60Hz decrementing sound timer
     uint16_t opcode;                        //current instruction
 
     //random

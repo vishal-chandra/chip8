@@ -40,7 +40,7 @@ bool Platform::processKeys(bool * keys) {
     while(SDL_PollEvent(&e)) { //loop over all queued keypresses
         switch(e.type) {
             case SDL_QUIT:
-                break;
+                return true;
 
             //we will flip the key value on change event
             case SDL_KEYDOWN:
@@ -99,8 +99,6 @@ bool Platform::processKeys(bool * keys) {
                     default:
                         break;
                 }
-            default:
-                break;
         }
     }
     return false;
