@@ -77,18 +77,28 @@ void Chip8::cycle() {
 
     switch(opcode & 0xF000u) {
         case 0x0000:
-            OP_00E0();
+            switch(opcode & 0x000Fu) {
+                case 0x0:
+                    OP_00E0();
+                    break;
+                case 0xE:
+                    OP_00EE();
+            }
             break;
         case 0x1000:
             OP_1NNN();
             break;
         case 0x2000:
+            OP_2NNN();
             break;
         case 0x3000:
+            OP_3XNN();
             break;
         case 0x4000:
+            OP_4XNN();
             break;
         case 0x5000:
+            OP_5XY0();
             break;
         case 0x6000:
             OP_6XNN();
@@ -97,22 +107,91 @@ void Chip8::cycle() {
             OP_7XNN();
             break;
         case 0x8000:
+            switch(opcode & 0x000Fu) {
+                case 0x0:
+                    OP_8XY0();
+                    break;
+                case 0x1:
+                    OP_8XY1();
+                    break;
+                case 0x2:
+                    OP_8XY2();
+                    break;
+                case 0x3:
+                    OP_8XY3();
+                    break;
+                case 0x4: 
+                    OP_8XY4();
+                    break;
+                case 0x5:
+                    OP_8XY5();
+                    break;
+                case 0x6:
+                    OP_8XY6();
+                    break;
+                case 0x7:
+                    OP_8XY7();
+                    break;
+                case 0xE:
+                    OP_8XYE();
+                    break;
+            }
             break;
         case 0x9000:
+            OP_9XY0();
             break;
         case 0xA000:
             OP_ANNN();
             break;
         case 0xB000:
+            OP_BNNN();
             break;
         case 0xC000:
+            OP_CXNN();
             break;
         case 0xD000:
             OP_DXYN();
             break;
         case 0xE000:
+            switch(opcode & 0x000Fu) {
+                case 0x1:
+                    OP_EXA1();
+                    break;
+                case 0xE:
+                    OP_EX9E();
+                    break;
+            }
             break;
         case 0xF000:
+            switch(opcode & 0x00FFu) {
+                case 0x07:
+                    OP_FX07();
+                    break;
+                case 0x0A:
+                    OP_FX0A();
+                    break;
+                case 0x15:
+                    OP_FX15();
+                    break;
+                case 0x18:
+                    OP_FX18();
+                    break;
+                case 0x1E:
+                    OP_FX1E();
+                    break;
+                case 0x29:
+                    OP_FX29();
+                    break;
+                case 0x33:
+                    OP_FX33();
+                    break;
+                case 0x55:
+                    OP_FX55();
+                    break;
+                case 0x65:
+                    OP_FX65();
+                    break;
+            }
             break;
     }
 
@@ -233,10 +312,11 @@ void Chip8::OP_8XY5() {
     uint8_t X = (opcode & 0x0F00u) >> 8;
     uint8_t Y = (opcode & 0x00F0u) >> 4;
 
-    registers[0xF] = (X > Y) ? 1 : 0;
+    registers[0xF] = (registers[X] > registers[Y]) ? 1 : 0;
     registers[X] -= registers[Y];
 }
 
+//VX = VY >> 1 and capture shifted bit
 void Chip8::OP_8XY6() {
     uint8_t X = (opcode & 0x0F00u) >> 8;
 
@@ -249,10 +329,11 @@ void Chip8::OP_8XY7() {
     uint8_t X = (opcode & 0x0F00u) >> 8;
     uint8_t Y = (opcode & 0x00F0u) >> 4;
 
-    registers[0xF] = (Y > X) ? 1 : 0;
+    registers[0xF] = (registers[Y] > registers[X]) ? 1 : 0;
     registers[X] = registers[Y] - registers[X];
 }
 
+//VX = VY << 1 and captture shifted bit
 void Chip8::OP_8XYE() { 
     uint8_t X = (opcode & 0x0F00u) >> 8;
 
@@ -261,6 +342,7 @@ void Chip8::OP_8XYE() {
     registers[X] <<= 1;
 }
 
+//skip next instruction if VX != VY
 void Chip8::OP_9XY0() {
     uint8_t X = (opcode & 0x0F00u) >> 8;
     uint8_t Y = (opcode & 0x00F0u) >> 4;
@@ -418,7 +500,7 @@ void Chip8::OP_FX55() {
 }
 
 //read X registers from memory, starting at I
-void Chip8::OP_FX55() {
+void Chip8::OP_FX65() {
     uint8_t X = (opcode & 0x0F00) >> 8;
 
     for(uint8_t reg = 0; reg <= X; ++reg) {
