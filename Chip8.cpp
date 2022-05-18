@@ -272,6 +272,20 @@ void Chip8::OP_ANNN() {
     I = (opcode & 0x0FFFu);
 }
 
+//jump to instruction NNN + V0
+void Chip8::OP_BNNN() {
+    uint16_t NNN = opcode & 0x0FFFu;
+    PC = NNN + registers[0];
+}
+
+//set VX = random & NN
+void Chip8::OP_CXNN() {
+    uint8_t X = (opcode & 0x0F00u) >> 8;
+    uint8_t NN = opcode & 0x00FFu;
+
+    registers[X] = randByte() & NN;
+}
+
 //draw N-height sprite from I
 //at (VX, VY) (IBM)
 void Chip8::OP_DXYN() {
@@ -312,6 +326,18 @@ void Chip8::OP_DXYN() {
         ++yLoc;
         if(yLoc > 63) return;
     }
+}
 
+//skip next instruction if Key VX is pressed
+void Chip8::OP_EX9E() {
+    uint8_t X = (opcode & 0x0F00u) >> 8;
 
+    if(keys[registers[X]]) PC += 2;
+}
+
+//skip next instruction if Kex VX is not pressed
+void Chip8::OP_EXA1() {
+    uint8_t X = (opcode & 0x0F00u) >> 8;
+
+    if(!keys[registers[X]]) PC += 2;
 }

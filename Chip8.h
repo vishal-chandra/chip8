@@ -67,7 +67,15 @@ class Chip8 {
 
     void OP_ANNN();
 
+    void OP_BNNN();
+
+    void OP_CXNN();
+
     void OP_DXYN();
+
+    void OP_EX9E();
+
+    void OP_EXA1();
 
     // EMULATED COMPONENTS
 
