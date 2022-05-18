@@ -343,21 +343,86 @@ void Chip8::OP_EXA1() {
     if(!keys[registers[X]]) PC += 2;
 }
 
+//store delay timer in VX
 void Chip8::OP_FX07() {
     uint8_t X = (opcode & 0x0F00) >> 8;
 
     registers[X] = delay_timer;
 }
 
+//wait for key press and store in VX
+void Chip8::OP_FX0A() {
+
+    //search all keys for one that's on
+    for(uint8_t key = 0; key < 16; ++key) {
+        if(keys[key]) {
+            //store key number
+            uint8_t X = (opcode & 0x0F00u) >> 8;
+            registers[X] = key;
+
+            return; //end operation
+        }
+    }
+
+    PC -= 2; //loop instr if no keys pressed
+}
+
+//store VX in delay timer
 void Chip8::OP_FX15() {
     uint8_t X = (opcode & 0x0F00) >> 8;
 
     delay_timer = registers[X];
 }
 
+//store VX in sound timer
 void Chip8::OP_FX18() {
     uint8_t X = (opcode & 0x0F00) >> 8;
 
     sound_timer = registers[X];
+}
+
+//I += VX with overflow checking
+void Chip8::OP_FX1E() {
+    uint8_t X = (opcode & 0x0F00) >> 8;
+
+    I += registers[X];
+    registers[0xF] = (I > 0x0FFF) ? 1 : 0; //set ovf flag
+}
+
+//I = address of char in VX
+void Chip8::OP_FX29() {
+    uint8_t X = (opcode & 0x0F00) >> 8;
+
+    I = FONT_START + 5 * registers[X];
+}
+
+//hex to decimal conversion
+void Chip8::OP_FX33() {
+    uint8_t X = (opcode & 0x0F00) >> 8;
+    uint8_t num = registers[X];
+
+    memory[I + 2] = num % 10;
+    num /= 10;
+    memory[I + 1] = num % 10;
+    num /= 10;
+    memory[I]     = num;
+}
+
+//load X registers to memory, starting at I
+void Chip8::OP_FX55() {
+    uint8_t X = (opcode & 0x0F00) >> 8;
+
+    for(uint8_t reg = 0; reg <= X; ++reg) {
+        memory[I + reg] = registers[reg];
+    }
+}
+
+//read X registers from memory, starting at I
+void Chip8::OP_FX55() {
+    uint8_t X = (opcode & 0x0F00) >> 8;
+
+    for(uint8_t reg = 0; reg <= X; ++reg) {
+        registers[reg] = memory[I + reg];
+    }
 }
 
