@@ -129,7 +129,7 @@ void Chip8::OP_00E0() {
 
 //return from subroutine
 void Chip8::OP_00EE() {
-    if(!callstack.size() > 0) return; //no subroutine to return from
+    if(!(callstack.size() > 0)) return; //no subroutine to return from
 
     PC = callstack.top();
     callstack.pop();
@@ -253,7 +253,8 @@ void Chip8::OP_8XY7() {
     registers[X] = registers[Y] - registers[X];
 }
 
-void Chip8::OP_8XYE() { uint8_t X = (opcode & 0x0F00u) >> 8;
+void Chip8::OP_8XYE() { 
+    uint8_t X = (opcode & 0x0F00u) >> 8;
 
     //capture shifted bit in VF
     registers[0xF] = (registers[X] & 0x80u) >> 7; 
