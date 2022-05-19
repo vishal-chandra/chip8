@@ -83,6 +83,7 @@ void Chip8::cycle() {
                     break;
                 case 0xE:
                     OP_00EE();
+                    break;
             }
             break;
         case 0x1000:
@@ -193,6 +194,7 @@ void Chip8::cycle() {
                     break;
             }
             break;
+        
     }
 
 }
@@ -214,7 +216,7 @@ void Chip8::OP_00EE() {
     callstack.pop();
 }
 
-//load program counter (IBM)
+//jump: load program counter (IBM)
 void Chip8::OP_1NNN() {
     PC = opcode & 0x0FFFu;
 }
@@ -366,7 +368,8 @@ void Chip8::OP_CXNN() {
     uint8_t X = (opcode & 0x0F00u) >> 8;
     uint8_t NN = opcode & 0x00FFu;
 
-    registers[X] = randByte() & NN;
+    uint8_t random = randByte();
+    registers[X] = random & NN;
 }
 
 //draw N-height sprite from I
@@ -377,37 +380,27 @@ void Chip8::OP_DXYN() {
     uint8_t N = (opcode & 0x000Fu);
 
     //positions wrap, so mod
-    uint8_t xLoc = registers[X] % 63;
-    uint8_t yLoc = registers[Y] % 31;
+    uint8_t xLoc = registers[X] % DISPLAY_WIDTH;
+    uint8_t yLoc = registers[Y] % DISPLAY_HEIGHT;
     
     //no collision to begin with
     registers[0xF] = 0;
 
     for(uint8_t row = 0; row < N; ++row) {
         uint8_t byte = memory[I + row]; //get byte
-        uint8_t mask = 0x80u;
 
         //loop over byte
-        for(int pos = 0; pos < 8; ++pos) {
+        for(int col = 0; col < 8; ++col) {
 
-            //don't draw over the edge
-            if(xLoc + pos > 63) break;
+            //move the mask bit and remove rest
+            uint8_t bit = byte & (0x80u >> col);
+            unsigned int flattened_pos = (xLoc + col) + (yLoc + row) * DISPLAY_WIDTH;
 
-            //move the mask bit and AND for one bit
-            bool bit = (bool)(byte & (mask >> pos));
-
-            //check bit against current display
-            unsigned int flattened_pos = (xLoc + pos) + (yLoc * DISPLAY_WIDTH);
-            bool curr_disp = (bool) display[flattened_pos];
-            bool disp_val = curr_disp != bit;   //XOR
-            registers[0xF] = curr_disp && bit; //VF shows sprite collision
-
-            //write changes
-            display[flattened_pos] = (disp_val ? 0xFFFFFFFF : 0x00000000);
+            if(bit) { //write changes if need to
+                if(display[flattened_pos]) registers[0xF] = 1;
+                display[flattened_pos] ^= 0xFFFFFFFF;
+            }
         }
-
-        ++yLoc;
-        if(yLoc > 63) return;
     }
 }
 
@@ -435,13 +428,12 @@ void Chip8::OP_FX07() {
 //wait for key press and store in VX
 void Chip8::OP_FX0A() {
 
+    uint8_t X = (opcode & 0x0F00u) >> 8; 
+
     //search all keys for one that's on
     for(uint8_t key = 0; key < 16; ++key) {
         if(keys[key]) {
-            //store key number
-            uint8_t X = (opcode & 0x0F00u) >> 8;
             registers[X] = key;
-
             return; //end operation
         }
     }
@@ -468,7 +460,7 @@ void Chip8::OP_FX1E() {
     uint8_t X = (opcode & 0x0F00) >> 8;
 
     I += registers[X];
-    registers[0xF] = (I > 0x0FFF) ? 1 : 0; //set ovf flag
+    //registers[0xF] = (I > 0x0FFF) ? 1 : 0; //set ovf flag
 }
 
 //I = address of char in VX
@@ -487,7 +479,7 @@ void Chip8::OP_FX33() {
     num /= 10;
     memory[I + 1] = num % 10;
     num /= 10;
-    memory[I]     = num;
+    memory[I]     = num % 10;
 }
 
 //load X registers to memory, starting at I
@@ -507,4 +499,3 @@ void Chip8::OP_FX65() {
         registers[reg] = memory[I + reg];
     }
 }
-

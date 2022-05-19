@@ -18,3 +18,4 @@ chip8_debug
 # ROMS
 *.ch8
 *.txt
+ROMs/
