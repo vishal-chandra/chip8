@@ -20,3 +20,10 @@ clean:
 	rm -f $(EXECUTABLE) $(EXECUTABLE)_debug $(OBJECTS)
 	rm -Rf *.dSYM
 
+test: debug do_test
+
+do_test: ./ROMs/tests/*
+	for file in $^; do \
+		./$(EXECUTABLE)_debug 20 1 $${file}; \
+	done
+

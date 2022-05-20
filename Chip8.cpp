@@ -335,7 +335,7 @@ void Chip8::OP_8XY7() {
     registers[X] = registers[Y] - registers[X];
 }
 
-//VX = VY << 1 and captture shifted bit
+//VX = VY << 1 and capture shifted bit
 void Chip8::OP_8XYE() { 
     uint8_t X = (opcode & 0x0F00u) >> 8;
 
@@ -394,7 +394,8 @@ void Chip8::OP_DXYN() {
 
             //move the mask bit and remove rest
             uint8_t bit = byte & (0x80u >> col);
-            unsigned int flattened_pos = (xLoc + col) + (yLoc + row) * DISPLAY_WIDTH;
+            unsigned int flattened_pos = ((xLoc + col) % DISPLAY_WIDTH)
+            + ((yLoc + row) % DISPLAY_HEIGHT) * DISPLAY_WIDTH;
 
             if(bit) { //write changes if need to
                 if(display[flattened_pos]) registers[0xF] = 1;
