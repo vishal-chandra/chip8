@@ -1,4 +1,5 @@
 #include "Platform.h"
+#include <iostream>
 
 using namespace std;
 
@@ -42,63 +43,114 @@ bool Platform::processKeys(bool * keys) {
             case SDL_QUIT:
                 return true;
 
-            //we will flip the key value on change event
             case SDL_KEYDOWN:
-            case SDL_KEYUP:
                 switch(e.key.keysym.scancode) {
-                    case SDL_SCANCODE_ESCAPE:
-                        return true;
                     case SDL_SCANCODE_X:
-                        keys[0] = !keys[0];
+                        keys[0] = true;
                         break;
                     case SDL_SCANCODE_1:
-                        keys[1] = !keys[1];
+                        keys[1] = true;
                         break;
                     case SDL_SCANCODE_2:
-                        keys[2] = !keys[2];
+                        keys[2] = true;
                         break;
                     case SDL_SCANCODE_3:
-                        keys[3] = !keys[3];
+                        keys[3] = true;
                         break;
                     case SDL_SCANCODE_Q:
-                        keys[4] = !keys[4];
+                        keys[4] = true;
                         break;
                     case SDL_SCANCODE_W:
-                        keys[5] = !keys[5];
+                        keys[5] = true;
                         break;
                     case SDL_SCANCODE_E:
-                        keys[6] = !keys[6];
+                        keys[6] = true;
                         break;
                     case SDL_SCANCODE_A:
-                        keys[7] = !keys[7];
+                        keys[7] = true;
                         break;
                     case SDL_SCANCODE_S:
-                        keys[8] = !keys[8];
+                        keys[8] = true;
                         break;
                     case SDL_SCANCODE_D:
-                        keys[9] = !keys[9];
+                        keys[9] = true;
                         break;
                     case SDL_SCANCODE_Z:
-                        keys[0xA] = !keys[0xA];
+                        keys[0xA] = true;
                         break;
                     case SDL_SCANCODE_C:
-                        keys[0xB] = !keys[0xB];
+                        keys[0xB] = true;
                         break;
                     case SDL_SCANCODE_4:
-                        keys[0xC] = !keys[0xC];
+                        keys[0xC] = true;
                         break;
                     case SDL_SCANCODE_R:
-                        keys[0xD] = !keys[0xD];
+                        keys[0xD] = true;
                         break;
                     case SDL_SCANCODE_F:
-                        keys[0xE] = !keys[0xE];
+                        keys[0xE] = true;
                         break;
                     case SDL_SCANCODE_V:
-                        keys[0xF] = !keys[0xF];
+                        keys[0xF] = true;
                         break;
                     default:
                         break;
                 }
+                break;
+            case SDL_KEYUP:
+                switch(e.key.keysym.scancode) {
+                    case SDL_SCANCODE_X:
+                        keys[0] = false;
+                        break;
+                    case SDL_SCANCODE_1:
+                        keys[1] = false;
+                        break;
+                    case SDL_SCANCODE_2:
+                        keys[2] = false;
+                        break;
+                    case SDL_SCANCODE_3:
+                        keys[3] = false;
+                        break;
+                    case SDL_SCANCODE_Q:
+                        keys[4] = false;
+                        break;
+                    case SDL_SCANCODE_W:
+                        keys[5] = false;
+                        break;
+                    case SDL_SCANCODE_E:
+                        keys[6] = false;
+                        break;
+                    case SDL_SCANCODE_A:
+                        keys[7] = false;
+                        break;
+                    case SDL_SCANCODE_S:
+                        keys[8] = false;
+                        break;
+                    case SDL_SCANCODE_D:
+                        keys[9] = false;
+                        break;
+                    case SDL_SCANCODE_Z:
+                        keys[0xA] = false;
+                        break;
+                    case SDL_SCANCODE_C:
+                        keys[0xB] = false;
+                        break;
+                    case SDL_SCANCODE_4:
+                        keys[0xC] = false;
+                        break;
+                    case SDL_SCANCODE_R:
+                        keys[0xD] = false;
+                        break;
+                    case SDL_SCANCODE_F:
+                        keys[0xE] = false;
+                        break;
+                    case SDL_SCANCODE_V:
+                        keys[0xF] = false;
+                        break;
+                    default:
+                        break;
+                }
+                break;
         }
     }
     return false;
