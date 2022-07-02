@@ -23,6 +23,8 @@ Chip8::Chip8()
     for(unsigned int i = 0; i < FONT_SIZE; ++i) {
         memory[FONT_START + i] = font[i];
     }
+
+    draw_flag = false;
 }
 
 //UTIL Functions
@@ -403,6 +405,8 @@ void Chip8::OP_DXYN() {
             }
         }
     }
+
+    draw_flag = true;
 }
 
 //skip next instruction if Key VX is pressed

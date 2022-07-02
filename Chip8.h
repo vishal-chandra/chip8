@@ -4,29 +4,29 @@
 #include <random>
 #include <chrono>
 
-class Chip8 {
+class Chip8
+{
 
-    public:
-
+public:
     Chip8();
     void loadROM(std::string filename);
 
     // I/O
-    bool keys[16];                                      //current user input
+    bool keys[16]; // current user input
     static const int DISPLAY_WIDTH = 64;
     static const int DISPLAY_HEIGHT = 32;
-    uint32_t display[DISPLAY_HEIGHT * DISPLAY_WIDTH];   //pixel data (using 32-bit for SDL)
+    uint32_t display[DISPLAY_HEIGHT * DISPLAY_WIDTH]; // pixel data (using 32-bit for SDL)
+    bool draw_flag;
 
-    //called once per tick
+    // called once per tick
     void cycle();
 
-    private:
-
-    //util
+private:
+    // util
     void loadFont();
     uint8_t randByte();
 
-    //OPERATIONS
+    // OPERATIONS
     void OP_00E0();
 
     void OP_00EE();
@@ -97,14 +97,14 @@ class Chip8 {
 
     // EMULATED COMPONENTS
 
-    //storage
-    uint8_t registers[16];                  //operands
-    uint8_t memory[4096]; 
-    const unsigned int MEM_START = 0x200;   //beginning of usable memory
-    const unsigned int FONT_START = 0x050;  //arbitrary beginning of font memory
-    const unsigned int FONT_SIZE = 16 * 5;  //16 font sprites, 5 rows each
+    // storage
+    uint8_t registers[16]; // operands
+    uint8_t memory[4096];
+    const unsigned int MEM_START = 0x200;  // beginning of usable memory
+    const unsigned int FONT_START = 0x050; // arbitrary beginning of font memory
+    const unsigned int FONT_SIZE = 16 * 5; // 16 font sprites, 5 rows each
 
-    const unsigned int font[16 * 5] = {     
+    const unsigned int font[16 * 5] = {
         0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
         0x20, 0x60, 0x20, 0x20, 0x70, // 1
         0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
@@ -123,16 +123,16 @@ class Chip8 {
         0xF0, 0x80, 0xF0, 0x80, 0x80  // F
     };
 
-    //execution
-    uint16_t I;                             //line number oprand register
-    uint16_t PC;                            //current line number
-    std::stack<uint16_t> callstack;         //call stack containing PC values
+    // execution
+    uint16_t I;                     // line number oprand register
+    uint16_t PC;                    // current line number
+    std::stack<uint16_t> callstack; // call stack containing PC values
 
-    uint8_t delay_timer;                    //60Hz decrementing delay timer
-    uint8_t sound_timer;                    //60Hz decrementing sound timer
-    uint16_t opcode;                        //current instruction
+    uint8_t delay_timer; // 60Hz decrementing delay timer
+    uint8_t sound_timer; // 60Hz decrementing sound timer
+    uint16_t opcode;     // current instruction
 
-    //random
+    // random
     std::mt19937 rand;
     std::uniform_int_distribution<uint8_t> byte_distr;
 };

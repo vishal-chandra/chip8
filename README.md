@@ -1,7 +1,7 @@
 # Chip8 Emulator
 
-The "Hello World!" of Computer Emulators. <br>
-Topics: Bitmasking, C++ `BitmaskType`, probability distributions in C++, basics of bytecode and CPU instructions, low-level implementations of loops and functions.
+A basic emulator (interpreter) for the [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) system from the 1970s. <br>
+Topics: Bitmasking, C++ `BitmaskType`, probability distributions in C++, bytecode and CPU instructions, clocking emulated CPUs, low-level implementations of loops and functions.
 
 ## TODO
 1. Add draw flag for display refresh
