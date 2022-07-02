@@ -4,11 +4,11 @@ A basic emulator (interpreter) for the [CHIP-8](https://en.wikipedia.org/wiki/CH
 Topics: Bitmasking, C++ `BitmaskType`, probability distributions in C++, bytecode and CPU instructions, clocking emulated CPUs, low-level implementations of loops and functions.
 
 ## TODO
-- [x] Add draw flag for display refresh
-- [ ] Restrict display refresh to 60hz
-- [ ] Update timing command line arg to be clock speed
-- [x] Add automatic testing instructions and test catalog
-- [ ] Investigate Metteo/Tronix test failure
+- [x] Add draw flag for display refresh <br>
+- [ ] Restrict display refresh to 60hz <br>
+- [ ] Update timing command line arg to be clock speed <br>
+- [x] Add automatic testing instructions and test catalog <br>
+- [ ] Investigate Metteo/Tronix test failure <br>
 
 ## Testing
 The makefile for this project is set up to automatically run all test ROMs in `./ROMs/tests` relative to the test binary. After one test window is closed, the next will open.
