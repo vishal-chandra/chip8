@@ -67,16 +67,20 @@ uint8_t Chip8::randByte() {
     return byte_distr(rand);
 }
 
+void Chip8::decrement_sound() {
+    if(sound_timer > 0) sound_timer--;
+}
+
+void Chip8::decrement_delay() {
+    if(delay_timer > 0) delay_timer--;
+}
+
 //MAIN SIMULATOR CALL
 void Chip8::cycle() {
 
     //read next instruction and increment
     opcode = (memory[PC] << 8u) | memory[PC + 1];
     PC += 2;
-
-    //update counters
-    if(sound_timer > 0) sound_timer--;
-    if(delay_timer > 0) delay_timer--;
 
     switch(opcode & 0xF000u) {
         case 0x0000:

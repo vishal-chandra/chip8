@@ -21,6 +21,10 @@ public:
     // called once per tick
     void cycle();
 
+    //counter control
+    void decrement_sound();
+    void decrement_delay();
+
 private:
     // util
     void loadFont();
