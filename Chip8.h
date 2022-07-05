@@ -23,7 +23,8 @@ public:
 
     // frame buffering
     std::deque<uint32_t *> past_frames;
-    uint32_t * get_buffered_display();
+    uint32_t * getBufferedDisplay();
+    void setAntiflicker(int level);
 
     // called once per tick
     void cycle();

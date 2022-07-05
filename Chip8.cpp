@@ -26,7 +26,6 @@ Chip8::Chip8()
     }
 
     draw_flag = false;
-    push_frame();
 }
 
 Chip8::~Chip8() {
@@ -70,6 +69,12 @@ void Chip8::loadFont() {
     }
 }
 
+void Chip8::setAntiflicker(int level) {
+    for(int i = 0; i < level - 1; ++i) {
+        push_frame();
+    }
+}
+
 uint8_t Chip8::randByte() {
     return byte_distr(rand);
 }
@@ -95,7 +100,7 @@ void Chip8::decrement_delay() {
     if(delay_timer > 0) delay_timer--;
 }
 
-uint32_t * Chip8::get_buffered_display() {
+uint32_t * Chip8::getBufferedDisplay() {
     uint32_t * buff = new uint32_t[DISPLAY_WIDTH * DISPLAY_HEIGHT];
     memcpy(buff, display, sizeof(display));
 

@@ -6,8 +6,8 @@
 using namespace std;
 
 int main(int argc, char **argv) {
-    if (argc != 4) {
-        cerr << "Usage: " << argv[0] << " <scale> <clock speed> <ROM PATH>\n";
+    if (argc != 4 && argc != 5) {
+        cerr << "Usage: " << argv[0] << " <scale> <clock speed> <antiflicker=2> <ROM PATH>\n";
         exit(1);
     }
 
@@ -20,7 +20,14 @@ int main(int argc, char **argv) {
 
     //I/O
     Chip8 system; //core
-    system.loadROM(argv[3]);
+    if(argc == 4) {
+        system.loadROM(argv[3]);
+        system.setAntiflicker(2);
+    }
+    else {
+        system.loadROM(argv[4]);
+        system.setAntiflicker(stoi(argv[3]));
+    }
 
     int pitch = sizeof(system.display[0]) * Chip8::DISPLAY_WIDTH; // num bytes wide
     Platform platform(
@@ -48,7 +55,7 @@ int main(int argc, char **argv) {
             lastTime = currentTime;
             system.cycle();
             if (system.draw_flag) {
-                uint32_t * disp = system.get_buffered_display();
+                uint32_t * disp = system.getBufferedDisplay();
                 platform.update(disp);
                 delete[] disp;
             }
