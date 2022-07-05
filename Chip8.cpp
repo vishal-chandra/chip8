@@ -26,6 +26,13 @@ Chip8::Chip8()
     }
 
     draw_flag = false;
+    push_frame();
+}
+
+Chip8::~Chip8() {
+    while(!past_frames.empty()) {
+        pop_frame();
+    }
 }
 
 //UTIL Functions
@@ -67,12 +74,38 @@ uint8_t Chip8::randByte() {
     return byte_distr(rand);
 }
 
+void Chip8::push_frame() {
+    uint32_t * frame = new uint32_t[DISPLAY_WIDTH * DISPLAY_HEIGHT];
+    memcpy(frame, display, sizeof(display));
+    past_frames.push_front(frame);
+}
+
+void Chip8::pop_frame() {
+    if(past_frames.size() > 0) {
+        delete[] past_frames.back();
+        past_frames.pop_back();
+    }
+}
+
 void Chip8::decrement_sound() {
     if(sound_timer > 0) sound_timer--;
 }
 
 void Chip8::decrement_delay() {
     if(delay_timer > 0) delay_timer--;
+}
+
+uint32_t * Chip8::get_buffered_display() {
+    uint32_t * buff = new uint32_t[DISPLAY_WIDTH * DISPLAY_HEIGHT];
+    memcpy(buff, display, sizeof(display));
+
+    for(auto& frame : past_frames) {
+        for(int i = 0; i < DISPLAY_WIDTH * DISPLAY_HEIGHT; ++i) {
+            buff[i] |= frame[i];
+        }
+    }
+
+    return buff;
 }
 
 //MAIN SIMULATOR CALL
@@ -382,6 +415,11 @@ void Chip8::OP_CXNN() {
 //draw N-height sprite from I
 //at (VX, VY) (IBM)
 void Chip8::OP_DXYN() {
+
+    //before drawing, save this frame
+    pop_frame();
+    push_frame();
+
     uint8_t X = (opcode & 0x0F00u) >> 8;
     uint8_t Y = (opcode & 0x00F0u) >> 4;
     uint8_t N = (opcode & 0x000Fu);

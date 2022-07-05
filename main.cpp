@@ -48,7 +48,9 @@ int main(int argc, char **argv) {
             lastTime = currentTime;
             system.cycle();
             if (system.draw_flag) {
-                platform.update(system.display);
+                uint32_t * disp = system.get_buffered_display();
+                platform.update(disp);
+                delete[] disp;
             }
         }
         if(counterDiff > counter_delay) {

@@ -1,6 +1,7 @@
 #include <cstdint>
 #include <string>
 #include <stack>
+#include <deque>
 #include <random>
 #include <chrono>
 
@@ -9,6 +10,8 @@ class Chip8
 
 public:
     Chip8();
+    ~Chip8();
+    
     void loadROM(std::string filename);
 
     // I/O
@@ -17,6 +20,10 @@ public:
     static const int DISPLAY_HEIGHT = 32;
     uint32_t display[DISPLAY_HEIGHT * DISPLAY_WIDTH]; // pixel data (using 32-bit for SDL)
     bool draw_flag;
+
+    // frame buffering
+    std::deque<uint32_t *> past_frames;
+    uint32_t * get_buffered_display();
 
     // called once per tick
     void cycle();
@@ -29,6 +36,10 @@ private:
     // util
     void loadFont();
     uint8_t randByte();
+
+    // frame buffer interaction
+    void push_frame();
+    void pop_frame();
 
     // OPERATIONS
     void OP_00E0();
