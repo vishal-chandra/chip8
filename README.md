@@ -3,12 +3,8 @@
 A basic emulator (interpreter) for the [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) system from the 1970s. <br>
 Topics: Bitmasking, bytecode, low-level implementations of loops, functions, and instruction cycles.
 
-## TODO
-- [x] Add draw flag for display refresh
-- [ ] Restrict display refresh to 60hz / add VBI
-- [x] Change command line arg #3 to be clock speed
-- [x] Add automatic testing instructions and test catalog
-- [x] Investigate Metteo/Tronix test failure
+## Usage
+`make` to compile, `./chip8 <scale> <clock speed> <ROM PATH>` to run.
 
 ## Testing
 The makefile for this project is set up to automatically run all test ROMs in `./ROMs/tests` relative to the test binary. After one test window is closed, the next will open.
