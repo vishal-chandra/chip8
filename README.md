@@ -6,7 +6,7 @@ Topics: Bitmasking, bytecode, low-level implementations of loops, functions, and
 ## TODO
 - [x] Add draw flag for display refresh
 - [ ] Restrict display refresh to 60hz / add VBI
-- [ ] Change command line arg #3 to be clock speed
+- [x] Change command line arg #3 to be clock speed
 - [x] Add automatic testing instructions and test catalog
 - [x] Investigate Metteo/Tronix test failure
 
