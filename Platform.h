@@ -7,11 +7,12 @@ class Platform {
     Platform(
         char const * title, 
         int windowWidth, int windowHeight, 
-        int imageWidth, int imageHeight
+        int imageWidth, int imageHeight,
+        int pitch
     );
     ~Platform();
 
-    void update(void const * pixels, int pitch);
+    void update(void const * pixels);
     bool processKeys(bool* keys);
 
     private:
@@ -19,4 +20,5 @@ class Platform {
     SDL_Renderer * renderer;
     SDL_Texture * texture;
 
+    int pitch;
 };

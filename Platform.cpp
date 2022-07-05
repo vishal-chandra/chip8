@@ -6,8 +6,10 @@ using namespace std;
 Platform::Platform(
     char const * title, 
     int windowWidth, int windowHeight, 
-    int imageWidth, int imageHeight
-) {
+    int imageWidth, int imageHeight,
+    int pitch
+) : pitch(pitch)
+{
 
     SDL_Init(SDL_INIT_VIDEO);
     window = SDL_CreateWindow(title, 0, 0, windowWidth, windowHeight, 0);
@@ -28,7 +30,7 @@ Platform::~Platform() {
     SDL_Quit();
 }
 
-void Platform::update(void const * pixels, int pitch) {
+void Platform::update(const void * pixels) {
     SDL_UpdateTexture(texture, nullptr, pixels, pitch);
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, texture, nullptr, nullptr);

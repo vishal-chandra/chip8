@@ -19,18 +19,20 @@ int main(int argc, char **argv) {
     int counter_delay = 16; //hardcoded at ~60Hz
 
     //I/O
+    Chip8 system; //core
+    system.loadROM(argv[3]);
+
+    int pitch = sizeof(system.display[0]) * Chip8::DISPLAY_WIDTH; // num bytes wide
     Platform platform(
         "Emulator",
         Chip8::DISPLAY_WIDTH * scale,
         Chip8::DISPLAY_HEIGHT * scale,
         Chip8::DISPLAY_WIDTH,
-        Chip8::DISPLAY_HEIGHT);
-
-    Chip8 system; //core
-    system.loadROM(argv[3]);
+        Chip8::DISPLAY_HEIGHT,
+        pitch
+    );
 
     // runtime vars, two separate "threads" for CPU and counters
-    int pitch = sizeof(system.display[0]) * Chip8::DISPLAY_WIDTH; // num bytes wide
     bool quit = false;
     auto lastTime = chrono::high_resolution_clock::now();
     auto lastCounterTime = chrono::high_resolution_clock::now();
@@ -46,7 +48,7 @@ int main(int argc, char **argv) {
             lastTime = currentTime;
             system.cycle();
             if (system.draw_flag) {
-                platform.update(system.display, pitch);
+                platform.update(system.display);
             }
         }
         if(counterDiff > counter_delay) {
