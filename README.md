@@ -4,7 +4,8 @@ A basic emulator (interpreter) for the [CHIP-8](https://en.wikipedia.org/wiki/CH
 Topics: Bitmasking, bytecode, low-level implementations of loops, functions, and instruction cycles.
 
 ## Usage
-`make` to compile, `./chip8 <scale> <clock speed> <ROM PATH>` to run.
+`make` to compile, `./chip8 <scale> <clock speed> <antiflicker=2> <ROM PATH>` to run. <br>
+The antiflicker parameter is optional and controls how many frames are stored and OR'd together when displaying. Higher levels of antiflicker will produce smoother video, but at the cost of runtime and motion blur.
 
 ## Testing
 The makefile for this project is set up to automatically run all test ROMs in `./ROMs/tests` relative to the test binary. After one test window is closed, the next will open.
