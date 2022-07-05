@@ -1,7 +1,10 @@
 # Chip8 Emulator
 
 A basic emulator (interpreter) for the [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) system from the 1970s. <br>
-Topics: Bitmasking, bytecode, low-level implementations of loops, functions, and instruction cycles.
+Topics: Bitmasking, bytecode, low-level implementations of loops, functions, and instruction cycles. <br><br>
+
+![pong](./demo/pong.mov) <br>
+Pong running at 540Hz with level 3 antiflicker.
 
 ## Usage
 `make` to compile, `./chip8 <scale> <clock speed> <antiflicker=2> <ROM PATH>` to run. <br>
