@@ -9,12 +9,13 @@ int main(int argc, char **argv)
 {
     if (argc != 4)
     {
-        cerr << "Usage: " << argv[0] << " <scale> <delay> <ROM PATH>\n";
+        cerr << "Usage: " << argv[0] << " <scale> <clock speed> <ROM PATH>\n";
         exit(1);
     }
 
     int scale = stoi(argv[1]);
-    int delay = stoi(argv[2]);
+    int clock = stoi(argv[2]);
+    int delay = (int) (60 / clock) * 1000;
 
     Platform platform(
         "Emulator",
