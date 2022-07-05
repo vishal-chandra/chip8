@@ -1,5 +1,6 @@
 #include "Chip8.h"
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 
@@ -7,11 +8,11 @@ Chip8::Chip8()
     : rand(std::chrono::high_resolution_clock::now().time_since_epoch().count())
 {
     //clear registers, keys, and display
-    for(auto reg : registers) {
+    for(auto &reg : registers) {
         reg = 0;
     }
-    for(auto key : keys) {
-        key = 0;
+    for(auto &key : keys) {
+        key = false;
     }
     OP_00E0();
 

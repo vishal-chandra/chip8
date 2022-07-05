@@ -1,27 +1,26 @@
 # Chip8 Emulator
 
 A basic emulator (interpreter) for the [CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) system from the 1970s. <br>
-Topics: Bitmasking, C++ `BitmaskType`, probability distributions in C++, bytecode and CPU instructions, clocking emulated CPUs, low-level implementations of loops and functions.
+Topics: Bitmasking, bytecode, low-level implementations of loops, functions, and instruction cycles.
 
 ## TODO
 - [x] Add draw flag for display refresh
-- [ ] Restrict display refresh to 60hz
-- [ ] Update timing command line arg to be clock speed
+- [ ] Restrict display refresh to 60hz / add VBI
 - [x] Add automatic testing instructions and test catalog
-- [ ] Investigate Metteo/Tronix test failure
+- [x] Investigate Metteo/Tronix test failure
 
 ## Testing
 The makefile for this project is set up to automatically run all test ROMs in `./ROMs/tests` relative to the test binary. After one test window is closed, the next will open.
 
-Current test catalog:
--BonCoder <br>
--Corax <br>
--IBM Logo <br>
--Mikolay Delay Test <br>
--Metteo/Tronix <br>
--Particles <br>
--Skosulor <br>
--Timendus <br>
+Current test catalog: <br>
+-[BonCoder](https://github.com/cj1128/chip8-emulator/blob/master/rom/BC_test.ch8) <br>
+-[Corax89](https://github.com/corax89/chip8-test-rom) <br>
+-[IBM Logo](https://github.com/loktar00/chip8/blob/master/roms/IBM%20Logo.ch8) <br>
+-[Mikolay Delay Test](https://github.com/loktar00/chip8/blob/master/roms/Delay%20Timer%20Test%20%5BMatthew%20Mikolay%2C%202010%5D.ch8) <br>
+-[Metteo](https://github.com/metteo/chip8-test-rom) <br>
+-[Particles](https://github.com/metteo/chip8-test-rom) <br>
+-[Skosulor](https://github.com/Skosulor/c8int/tree/master/test) <br>
+-[Timendus](https://github.com/Timendus/chip8-test-suite) <br>
 
 ## References
 
